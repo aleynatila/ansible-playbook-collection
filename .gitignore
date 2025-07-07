@@ -1,0 +1,68 @@
+# Ansible
+*.retry
+.ansible/
+ansible.log
+
+# SSH Keys
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Terraform (eğer kullanılıyorsa)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.env
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Backup files
+*.bak
+*.backup
+
+# Secrets and sensitive data
+secrets.yml
+vault_password_file
+.vault_pass
+inventory_prod
+inventory_production
+*secret*
+*password*
+
+# Local configuration
+local_settings.yml
+override.yml
