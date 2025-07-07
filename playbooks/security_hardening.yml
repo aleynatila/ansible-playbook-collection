@@ -1,0 +1,37 @@
+---
+- name: Temel Güvenlik Sertleştirme
+  hosts: all
+  become: true
+  tasks:
+    - name: SSH root login devre dışı bırak
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: "^PermitRootLogin"
+        line: "PermitRootLogin no"
+      notify: Restart SSH
+
+    - name: UFW aktif et ve sadece SSH & HTTP izin ver
+      ufw:
+        state: enabled
+        policy: deny
+      ignore_errors: true
+
+    - name: Gerekli portları aç
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - 22
+        - 80
+
+    - name: Sistem paketlerini güncelle
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: ssh
+        state: restarted

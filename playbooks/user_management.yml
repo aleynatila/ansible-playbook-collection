@@ -1,0 +1,26 @@
+---
+- name: Kullanıcı Yönetimi
+  hosts: all
+  become: true
+  vars:
+    new_user: "deploy"
+    user_ssh_key: "ssh-rsa AAAAB3Nz..."
+  tasks:
+    - name: Yeni kullanıcı oluştur
+      user:
+        name: "{{ new_user }}"
+        shell: /bin/bash
+        groups: sudo
+        state: present
+        create_home: true
+
+    - name: Yetkili anahtar ekle
+      authorized_key:
+        user: "{{ new_user }}"
+        key: "{{ user_ssh_key }}"
+
+    - name: Sudo ayrıcalığı ver
+      copy:
+        dest: "/etc/sudoers.d/{{ new_user }}"
+        content: "{{ new_user }} ALL=(ALL) NOPASSWD:ALL"
+        mode: "0440"

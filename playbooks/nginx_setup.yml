@@ -1,0 +1,28 @@
+---
+- name: Nginx Web Sunucusu Kurulumu
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Nginx paketini kur
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Nginx servisini başlat ve enable yap
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Temel index.html oluştur
+      copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Kurulum Başarılı!</h1>"
+
+    - name: HTTP portunu aç (UFW)
+      ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+      when: ansible_os_family == "Debian"
